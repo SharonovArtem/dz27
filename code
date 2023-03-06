@@ -56,30 +56,26 @@ namespace dzkurs
             Console.WriteLine("Введите ФИО");
             userInput = Console.ReadLine();
 
-            string[] tempName = new string[name.Length + 1];
-
-            AddValue(tempName, ref name, userInput);
+            AddValue(ref name, userInput);
 
             Console.WriteLine("Введите должность");
             userInput = Console.ReadLine();
 
-            string[] tempPost = new string[post.Length + 1];
-
-            AddValue(tempPost, ref post, userInput);
+            AddValue(ref post, userInput);
 
             Console.WriteLine("Должность " + post[post.Length - 2] + " Установлена на сотрудника " + name[name.Length - 2]);
         }
 
-        static void AddValue(string[] tempValue, ref string[] value, string userInput)
+        static void AddValue(ref string[] value, string userInput)
         {
+            string[] tempValue = new string[value.Length + 1];
 
             for (int i = 0; i < value.Length; i++)
             {
-
                 tempValue[i] = value[i];
-                tempValue[value.Length - 1] = userInput;
             }
 
+            tempValue[value.Length - 1] = userInput;
             value = tempValue;
         }
 
@@ -96,29 +92,47 @@ namespace dzkurs
 
         static void DeleteDossier(ref string[] name, ref string[] post)
         {
-            Console.WriteLine("Должность " + name[name.Length - 2] + " " + post[post.Length - 2] + " удалена");
+            string userInput;
+            Console.WriteLine("Введите ФИО");
+            userInput = Console.ReadLine();
 
-            string[] tempName = new string[post.Length - 1];
-
-            for (int i = 0; i < tempName.Length; i++)
+            for (int i = 0; i < name.Length; i++)
             {
-                tempName[i] = name[i];
+                if (name[i] == userInput)
+                {
+                    RemoveValue(ref name, i);
+
+                    RemoveValue(ref post, i);
+                    break;
+                }
+            }            
+        }
+
+        static string[] RemoveValue(ref string[] value, int i)
+        {
+            string[] tempValue = new string[value.Length - 1];
+
+            for (int j = i; j < value.Length; j++)
+            {
+                if (j + 1 <= value.Length - 1)
+                {
+                    value[j] = value[j + 1];
+                }
             }
 
-            name = tempName;
-
-            string[] tempPost = new string[post.Length - 1];
-
-            for (int i = 0; i < tempPost.Length; i++)
+            for (int j = 0; j < tempValue.Length ; j ++)
             {
-                tempPost[i] = post[i];
+                tempValue[j] = value[j];
             }
 
-            post = tempPost;
+            value = tempValue;
+
+            return value;
         }
 
         static void SearchByLastname(string[] name, string[] post)
         {
+            char space = ' ';
             string userInput;
             int count = 0;
             string tempLastName;
@@ -129,7 +143,7 @@ namespace dzkurs
             for (int i = 0; i < name.Length - 1; i++)
             {
                 tempLastName = name[i];
-                tempLastNameSplited = tempLastName.Split(' ');
+                tempLastNameSplited = tempLastName.Split(space);
 
                 if (tempLastNameSplited[0].ToLower() == userInput.ToLower())
                 {
