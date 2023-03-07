@@ -21,8 +21,16 @@ namespace dzkurs
             string exitCommand = "5";
             bool isWorking = true;
 
+            Console.WriteLine("Приветствую вас в нашем списке досье!");
+            Console.WriteLine("Вот список команд:");
+
             while (isWorking)
             {
+                Console.WriteLine("Добавить досье - " + addDossierCommand);
+                Console.WriteLine("Показать все досье - " + showAllDossiersCommand);
+                Console.WriteLine("Удалить досье - " + deleteDossierCommand);
+                Console.WriteLine("Найти досье по фамилии - " + searchByLastnameCommand);
+                Console.WriteLine("Выйти - " + exitCommand);
                 Console.WriteLine("Введите команду");
                 command = Console.ReadLine();
 
@@ -32,7 +40,7 @@ namespace dzkurs
                 }
                 else if (command == showAllDossiersCommand)
                 {
-                    ShowDossier(names, positions);
+                    ShowAllDossiers(names, positions);
                 }
                 else if (command == deleteDossierCommand)
                 {
@@ -47,26 +55,30 @@ namespace dzkurs
                     Console.WriteLine("До свидания!");
                     isWorking = false;
                 }
+                else
+                {
+                    Console.WriteLine("неверная команда");
+                }
             }
         }
 
-        static void CompleteDossier(ref string[] name, ref string[] post)
+        static void CompleteDossier(ref string[] names, ref string[] positions)
         {
             string userInput;
             Console.WriteLine("Введите ФИО");
             userInput = Console.ReadLine();
 
-            AddValue(ref name, userInput);
+            AddEntry(ref names, userInput);
 
             Console.WriteLine("Введите должность");
             userInput = Console.ReadLine();
 
-            AddValue(ref post, userInput);
+            AddEntry(ref positions, userInput);
 
-            Console.WriteLine("Должность " + post[post.Length - 2] + " Установлена на сотрудника " + name[name.Length - 2]);
+            Console.WriteLine("Должность " + positions[positions.Length - 2] + " Установлена на сотрудника " + names[names.Length - 2]);
         }
 
-        static void AddValue(ref string[] value, string userInput)
+        static void AddEntry(ref string[] value, string userInput)
         {
             string[] tempValue = new string[value.Length + 1];
 
@@ -79,36 +91,46 @@ namespace dzkurs
             value = tempValue;
         }
 
-        static void ShowDossier(string[] name, string[] post)
+        static void ShowAllDossiers(string[] names, string[] positions)
         {
             int count = 0;
 
-            for (int i = 0; i < name.Length - 1; i++)
+            if (names[0] != null)
             {
-                count++;
-                Console.WriteLine(count + ". " + name[i] + " - " + post[i]);
+                for (int i = 0; i < names.Length - 1; i++)
+                {
+                    count++;
+                    Console.WriteLine(count + ". " + names[i] + " - " + positions[i]);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Список пуст:(");
             }
         }
 
-        static void DeleteDossier(ref string[] name, ref string[] post)
+        static void DeleteDossier(ref string[] names, ref string[] positions)
         {
             string userInput;
-            Console.WriteLine("Введите ФИО");
-            userInput = Console.ReadLine();
+            int index;
 
-            for (int i = 0; i < name.Length; i++)
+            if (names[0] != null)
             {
-                if (name[i] == userInput)
-                {
-                    RemoveValue(ref name, i);
+                Console.WriteLine("Введите ФИО");
+                userInput = Console.ReadLine();
 
-                    RemoveValue(ref post, i);
-                    break;
-                }
-            }            
+                index = Array.IndexOf(names, userInput);
+
+                RemoveValue(ref names, index);
+                RemoveValue(ref positions, index);
+            }
+            else
+            {
+                Console.WriteLine("Список пуст:(");
+            }
         }
 
-        static string[] RemoveValue(ref string[] value, int i)
+        static void RemoveValue(ref string[] value, int i)
         {
             string[] tempValue = new string[value.Length - 1];
 
@@ -120,36 +142,46 @@ namespace dzkurs
                 }
             }
 
-            for (int j = 0; j < tempValue.Length ; j ++)
+            for (int j = 0; j < tempValue.Length; j++)
             {
                 tempValue[j] = value[j];
             }
 
             value = tempValue;
-
-            return value;
         }
 
-        static void SearchByLastname(string[] name, string[] post)
+        static void SearchByLastname(string[] names, string[] positions)
         {
             char space = ' ';
             string userInput;
             int count = 0;
             string tempLastName;
             string[] tempLastNameSplited;
-            Console.WriteLine("Введите фамилию");
-            userInput = Console.ReadLine();
 
-            for (int i = 0; i < name.Length - 1; i++)
+            if (names[0] != null)
             {
-                tempLastName = name[i];
-                tempLastNameSplited = tempLastName.Split(space);
+                Console.WriteLine("Введите фамилию");
+                userInput = Console.ReadLine();
 
-                if (tempLastNameSplited[0].ToLower() == userInput.ToLower())
+                for (int i = 0; i < names.Length - 1; i++)
                 {
-                    count++;
-                    Console.WriteLine(count + ". " + name[i] + " - " + post[i]);
+                    tempLastName = names[i];
+                    tempLastNameSplited = tempLastName.Split(space);
+
+                    if (tempLastNameSplited[0].ToLower() == userInput.ToLower())
+                    {
+                        count++;
+                        Console.WriteLine(count + ". " + names[i] + " - " + positions[i]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Такой фамилии нет");
+                    }
                 }
+            }
+            else
+            {
+                Console.WriteLine("Список пуст:(");
             }
         }
     }
