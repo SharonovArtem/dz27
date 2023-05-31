@@ -68,17 +68,17 @@ namespace dzkurs
             Console.WriteLine("Введите ФИО");
             userInput = Console.ReadLine();
 
-            AddEntry(ref names, userInput);
+            AddEntry(names, userInput);
 
             Console.WriteLine("Введите должность");
             userInput = Console.ReadLine();
 
-            AddEntry(ref positions, userInput);
+            AddEntry(positions, userInput);
 
-            Console.WriteLine("Должность " + positions[positions.Length - 2] + " Установлена на сотрудника " + names[names.Length - 2]);
+            Console.WriteLine("Должность " + positions[positions.Length - 1] + " Установлена на сотрудника " + names[names.Length - 1]);
         }
 
-        static void AddEntry(ref string[] value, string userInput)
+        static string[] AddEntry(string[] value, string userInput)
         {
             string[] tempValue = new string[value.Length + 1];
 
@@ -89,6 +89,8 @@ namespace dzkurs
 
             tempValue[value.Length - 1] = userInput;
             value = tempValue;
+
+            return value;
         }
 
         static void ShowAllDossiers(string[] names, string[] positions)
