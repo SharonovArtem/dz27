@@ -11,7 +11,7 @@ namespace dzkurs
     {
         static void Main(string[] args)
         {
-            string[] names = new string[1];
+            string[] names = new string[0];
             string[] positions = new string[1];
             string command;
             string addDossierCommand = "1";
@@ -78,19 +78,19 @@ namespace dzkurs
             Console.WriteLine("Должность " + positions[positions.Length - 1] + " Установлена на сотрудника " + names[names.Length - 1]);
         }
 
-        static string[] AddEntry(string[] value, string userInput)
+        static string[] AddEntry(string[] arrayValue, string userInput)
         {
-            string[] tempValue = new string[value.Length + 1];
+            string[] tempValue = new string[arrayValue.Length + 1];
 
-            for (int i = 0; i < value.Length; i++)
+            for (int i = 0; i < arrayValue.Length; i++)
             {
-                tempValue[i] = value[i];
+                tempValue[i] = arrayValue[i];
             }
 
-            tempValue[value.Length - 1] = userInput;
-            value = tempValue;
+            tempValue[arrayValue.Length - 1] = userInput;
+            arrayValue = tempValue;
 
-            return value;
+            return arrayValue;
         }
 
         static void ShowAllDossiers(string[] names, string[] positions)
@@ -123,8 +123,8 @@ namespace dzkurs
 
                 index = Array.IndexOf(names, userInput);
 
-                RemoveValue(ref names, index);
-                RemoveValue(ref positions, index);
+                RemoveStringFromDossier(names, index);
+                RemoveStringFromDossier(positions, index);
             }
             else
             {
@@ -132,24 +132,25 @@ namespace dzkurs
             }
         }
 
-        static void RemoveValue(ref string[] value, int i)
+        static string[] RemoveStringFromDossier(string[] arrayValue, int index)
         {
-            string[] tempValue = new string[value.Length - 1];
+            string[] tempValue = new string[arrayValue.Length - 1];
 
-            for (int j = i; j < value.Length; j++)
+            for (int j = index; j < arrayValue.Length; j++)
             {
-                if (j + 1 <= value.Length - 1)
+                if (j + 1 <= arrayValue.Length - 1)
                 {
-                    value[j] = value[j + 1];
+                    arrayValue[j] = arrayValue[j + 1];
                 }
             }
 
             for (int j = 0; j < tempValue.Length; j++)
             {
-                tempValue[j] = value[j];
+                tempValue[j] = arrayValue[j];
             }
 
-            value = tempValue;
+            arrayValue = tempValue;
+            return arrayValue;
         }
 
         static void SearchByLastname(string[] names, string[] positions)
@@ -159,8 +160,9 @@ namespace dzkurs
             int count = 0;
             string tempLastName;
             string[] tempLastNameSplited;
+            bool isSecondName = true;
 
-            if (names[0] != null)
+            if (names.Length < 0)
             {
                 Console.WriteLine("Введите фамилию");
                 userInput = Console.ReadLine();
@@ -170,7 +172,7 @@ namespace dzkurs
                     tempLastName = names[i];
                     tempLastNameSplited = tempLastName.Split(space);
 
-                    if (tempLastNameSplited[0].ToLower() == userInput.ToLower())
+                    if (isSecondName)
                     {
                         count++;
                         Console.WriteLine(count + ". " + names[i] + " - " + positions[i]);
