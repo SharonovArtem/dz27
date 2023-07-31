@@ -12,7 +12,7 @@ namespace dzkurs
         static void Main(string[] args)
         {
             string[] names = new string[0];
-            string[] positions = new string[1];
+            string[] positions = new string[0];
             string command;
             string addDossierCommand = "1";
             string showAllDossiersCommand = "2";
@@ -68,12 +68,12 @@ namespace dzkurs
             Console.WriteLine("Введите ФИО");
             userInput = Console.ReadLine();
 
-            AddEntry(names, userInput);
+            names = AddEntry(names, userInput);
 
             Console.WriteLine("Введите должность");
             userInput = Console.ReadLine();
 
-            AddEntry(positions, userInput);
+            positions = AddEntry(positions, userInput);
 
             Console.WriteLine("Должность " + positions[positions.Length - 1] + " Установлена на сотрудника " + names[names.Length - 1]);
         }
@@ -87,7 +87,7 @@ namespace dzkurs
                 tempValue[i] = arrayValue[i];
             }
 
-            tempValue[arrayValue.Length - 1] = userInput;
+            tempValue[tempValue.Length - 1] = userInput;
             arrayValue = tempValue;
 
             return arrayValue;
@@ -97,9 +97,9 @@ namespace dzkurs
         {
             int count = 0;
 
-            if (names[0] != null)
+            if (names.Length > 0)
             {
-                for (int i = 0; i < names.Length - 1; i++)
+                for (int i = 0; i < names.Length; i++)
                 {
                     count++;
                     Console.WriteLine(count + ". " + names[i] + " - " + positions[i]);
@@ -116,7 +116,7 @@ namespace dzkurs
             string userInput;
             int index;
 
-            if (names[0] != null)
+            if (names.Length > 0)
             {
                 Console.WriteLine("Введите ФИО");
                 userInput = Console.ReadLine();
@@ -135,18 +135,18 @@ namespace dzkurs
         static string[] RemoveStringFromDossier(string[] arrayValue, int index)
         {
             string[] tempValue = new string[arrayValue.Length - 1];
-
-            for (int j = index; j < arrayValue.Length; j++)
+            
+            for (int i = index; i < arrayValue.Length; i++)
             {
-                if (j + 1 <= arrayValue.Length - 1)
+                if (i + 1 <= arrayValue.Length - 1)
                 {
-                    arrayValue[j] = arrayValue[j + 1];
+                    arrayValue[i] = arrayValue[i + 1];
                 }
             }
 
-            for (int j = 0; j < tempValue.Length; j++)
+            for (int i = 0; i < tempValue.Length; i++)
             {
-                tempValue[j] = arrayValue[j];
+                tempValue[i] = arrayValue[i];
             }
 
             arrayValue = tempValue;
@@ -160,9 +160,8 @@ namespace dzkurs
             int count = 0;
             string tempLastName;
             string[] tempLastNameSplited;
-            bool isSecondName = true;
 
-            if (names.Length < 0)
+            if (names.Length > 0)
             {
                 Console.WriteLine("Введите фамилию");
                 userInput = Console.ReadLine();
@@ -172,7 +171,7 @@ namespace dzkurs
                     tempLastName = names[i];
                     tempLastNameSplited = tempLastName.Split(space);
 
-                    if (isSecondName)
+                    if (userInput == names[i])
                     {
                         count++;
                         Console.WriteLine(count + ". " + names[i] + " - " + positions[i]);
