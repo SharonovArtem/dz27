@@ -123,8 +123,8 @@ namespace dzkurs
 
                 index = Array.IndexOf(names, userInput);
 
-                RemoveStringFromDossier(names, index);
-                RemoveStringFromDossier(positions, index);
+                names = RemoveStringFromDossier(names, index);
+                positions = RemoveStringFromDossier(positions, index);
             }
             else
             {
@@ -135,7 +135,7 @@ namespace dzkurs
         static string[] RemoveStringFromDossier(string[] arrayValue, int index)
         {
             string[] tempValue = new string[arrayValue.Length - 1];
-            
+
             for (int i = index; i < arrayValue.Length; i++)
             {
                 if (i + 1 <= arrayValue.Length - 1)
