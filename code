@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace dzkurs
 {
@@ -36,7 +31,7 @@ namespace dzkurs
 
                 if (command == addDossierCommand)
                 {
-                    CompleteDossier(ref names, ref positions);
+                    AddDossier(ref names, ref positions);
                 }
                 else if (command == showAllDossiersCommand)
                 {
@@ -62,23 +57,23 @@ namespace dzkurs
             }
         }
 
-        static void CompleteDossier(ref string[] names, ref string[] positions)
+        static void AddDossier(ref string[] names, ref string[] positions)
         {
             string userInput;
             Console.WriteLine("Введите ФИО");
             userInput = Console.ReadLine();
 
-            names = AddEntry(names, userInput);
+            names = AddData(names, userInput);
 
             Console.WriteLine("Введите должность");
             userInput = Console.ReadLine();
 
-            positions = AddEntry(positions, userInput);
+            positions = AddData(positions, userInput);
 
             Console.WriteLine("Должность " + positions[positions.Length - 1] + " Установлена на сотрудника " + names[names.Length - 1]);
         }
 
-        static string[] AddEntry(string[] arrayValue, string userInput)
+        static string[] AddData(string[] arrayValue, string userInput)
         {
             string[] tempValue = new string[arrayValue.Length + 1];
 
@@ -123,8 +118,8 @@ namespace dzkurs
 
                 index = Array.IndexOf(names, userInput);
 
-                names = RemoveStringFromDossier(names, index);
-                positions = RemoveStringFromDossier(positions, index);
+                names = RemoveData(names, index);
+                positions = RemoveData(positions, index);
             }
             else
             {
@@ -132,16 +127,13 @@ namespace dzkurs
             }
         }
 
-        static string[] RemoveStringFromDossier(string[] arrayValue, int index)
+        static string[] RemoveData(string[] arrayValue, int index)
         {
             string[] tempValue = new string[arrayValue.Length - 1];
 
-            for (int i = index; i < arrayValue.Length; i++)
-            {
-                if (i + 1 <= arrayValue.Length - 1)
-                {
-                    arrayValue[i] = arrayValue[i + 1];
-                }
+            for (int i = index; i < arrayValue.Length - 1; i++)
+            {                
+                arrayValue[i] = arrayValue[i + 1];
             }
 
             for (int i = 0; i < tempValue.Length; i++)
@@ -158,8 +150,8 @@ namespace dzkurs
             char space = ' ';
             string userInput;
             int count = 0;
-            string tempLastName;
-            string[] tempLastNameSplited;
+            string nameSplited;
+            string tempNameSplited;
 
             if (names.Length > 0)
             {
@@ -168,10 +160,10 @@ namespace dzkurs
 
                 for (int i = 0; i < names.Length - 1; i++)
                 {
-                    tempLastName = names[i];
-                    tempLastNameSplited = tempLastName.Split(space);
+                    tempNameSplited = names[i];
+                    nameSplited = tempNameSplited.Split(space)[0];
 
-                    if (userInput == names[i])
+                    if (userInput == nameSplited)
                     {
                         count++;
                         Console.WriteLine(count + ". " + names[i] + " - " + positions[i]);
